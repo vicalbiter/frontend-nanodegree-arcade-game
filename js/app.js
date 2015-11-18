@@ -1,3 +1,7 @@
+// Declare global variables to control player displacement
+var distanceX = 101,
+    distanceY = 83;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -24,13 +28,49 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function() {
 
+    // Assign the image for the player
+    this.sprite = 'images/char-boy.png';
+
+    // Assign the home position for the player
+    this.x = 200;
+    this.y = 405;
+};
+
+// Update the player's position
+Player.prototype.update = function(dt) {
+
+};
+
+// Draw the player on the screen
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Change the player position according to keyboard input
+Player.prototype.handleInput = function(pressedKey) {
+    switch(pressedKey) {
+        case 'left': 
+            this.x = this.x - distanceX;
+            break;
+        case 'up':
+            this.y = this.y - distanceY;
+            break;
+        case 'right':
+            this.x = this.x + distanceX;
+            break;
+        case 'down':
+            this.y = this.y + distanceY;
+            break;
+    }
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-
+var allEnemies = [];
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
