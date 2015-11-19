@@ -1,6 +1,8 @@
-// Declare global variables to control player displacement
+// Declare global variables to control player's movement
 var distanceX = 101,
-    distanceY = 83;
+    distanceY = 83,
+    homeX = 202,
+    homeY = 405;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -34,13 +36,14 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 
     // Assign the home position for the player
-    this.x = 200;
-    this.y = 405;
+    this.x = homeX;
+    this.y = homeY;
 };
 
 // Update the player's position
 Player.prototype.update = function(dt) {
-
+    // Since the player's movement is "discrete", not continuous (as it is the case for the enemies)
+    // this function is not being used
 };
 
 // Draw the player on the screen
@@ -52,16 +55,16 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(pressedKey) {
     switch(pressedKey) {
         case 'left': 
-            this.x = this.x - distanceX;
+            if (this.x > 0) { this.x = this.x - distanceX; }
             break;
         case 'up':
-            this.y = this.y - distanceY;
+            if (this.y > -10) { this.y = this.y - distanceY; }
             break;
         case 'right':
-            this.x = this.x + distanceX;
+            if (this.x < 404) { this.x = this.x + distanceX; }
             break;
         case 'down':
-            this.y = this.y + distanceY;
+            if (this.y < 405) { this.y = this.y + distanceY; }
             break;
     }
 };
