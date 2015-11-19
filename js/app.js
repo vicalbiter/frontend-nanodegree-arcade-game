@@ -30,7 +30,7 @@ var Enemy = function() {
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
-        radius : 40,
+        radius : 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
@@ -87,12 +87,15 @@ Enemy.prototype.setSpeed = function() {
 // Check for a collision with the player
 Enemy.prototype.collision = function(playerHitbox) {
 
+    // Calculate distance between the hitboxes' centers
     var dx = this.hitbox.x - playerHitbox.x;
     var dy = this.hitbox.y - playerHitbox.y;
     var distance = Math.sqrt(dx * dx + dy * dy);
 
+    // Return a collision if the distance between the hitboxes' centers is less than
+    // the sum of their radius
     if (distance < this.hitbox.radius + playerHitbox.radius) {
-        console.log("Collision detected!");
+        return true;
     }
 
 };
@@ -106,12 +109,11 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 
     // Assign the home position for the player
-    this.x = homeX;
-    this.y = homeY;
+    this.home();
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
-        radius : 40,
+        radius : 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
@@ -123,6 +125,9 @@ Player.prototype.update = function(dt) {
     // Update the hitbox
     this.hitbox.x = this.x + hitboxX;
     this.hitbox.y = this.y + hitboxY;
+
+    // Check if the player has reached the water
+    this.reachedWater();
 };
 
 // Draw the player on the screen
@@ -148,6 +153,23 @@ Player.prototype.handleInput = function(pressedKey) {
             break;
     }
 };
+
+// Check if player has reached the water
+Player.prototype.reachedWater = function() {
+    
+    // Return the player back to home if it has reached the water
+    if (player.y === -10) {
+        this.home();
+    }
+    
+    // Score points for reaching the water
+};
+
+// Send the player back to home
+Player.prototype.home = function() {
+    this.x = homeX;
+    this.y = homeY;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies

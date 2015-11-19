@@ -159,7 +159,10 @@ var Engine = (function(global) {
     function checkCollisions() {
         // Check for the collisions between the player and the enemies
         allEnemies.forEach(function(enemy) {
-            enemy.collision(player.hitbox);
+            var collisionHappened = enemy.collision(player.hitbox);
+            if (collisionHappened) {
+                player.home();
+            }
         });
     }
 
