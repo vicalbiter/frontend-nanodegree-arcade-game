@@ -5,7 +5,9 @@ var distanceX = 101,
     homeY = 405,
     enemyHomeX = -100,
     boardWidth = 505,
-    boardHeigh = 606;
+    boardHeigh = 606,
+    hitboxX = 50.5,
+    hitboxY = 41.5;
 
 
 // Enemies our player must avoid
@@ -26,6 +28,13 @@ var Enemy = function() {
     // Set enemy initial speed
     this.speed = this.setSpeed();
 
+    // Create a circular hitbox to check for collisions with other game entities
+    this.hitbox = {
+        radius : 40,
+        x: this.x + hitboxX,
+        y: this.y + hitboxY
+    };
+
 };
 
 // Update the enemy's position, required method for game
@@ -44,6 +53,11 @@ Enemy.prototype.update = function(dt) {
         this.speed = this.setSpeed();
         this.y = this.setRow();
     }
+
+    // Update the hitbox
+    this.hitbox.x = this.x + hitboxX;
+    this.hitbox.y = this.y + hitboxY;
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -70,6 +84,18 @@ Enemy.prototype.setSpeed = function() {
 
 };
 
+// Check for a collision with the player
+Enemy.prototype.collision = function(playerHitbox) {
+
+    var dx = this.hitbox.x - playerHitbox.x;
+    var dy = this.hitbox.y - playerHitbox.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < this.hitbox.radius + playerHitbox.radius) {
+        console.log("Collision detected!");
+    }
+
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -82,12 +108,21 @@ var Player = function() {
     // Assign the home position for the player
     this.x = homeX;
     this.y = homeY;
+
+    // Create a circular hitbox to check for collisions with other game entities
+    this.hitbox = {
+        radius : 40,
+        x: this.x + hitboxX,
+        y: this.y + hitboxY
+    };
 };
 
 // Update the player's position
 Player.prototype.update = function(dt) {
-    // Since the player's movement is "discrete", not continuous (as it is the case for the enemies)
-    // this function is not being used
+
+    // Update the hitbox
+    this.hitbox.x = this.x + hitboxX;
+    this.hitbox.y = this.y + hitboxY;
 };
 
 // Draw the player on the screen
@@ -96,6 +131,7 @@ Player.prototype.render = function() {
 };
 
 // Change the player position according to keyboard input
+// The movement is limited so that the player won't move outside the canvas
 Player.prototype.handleInput = function(pressedKey) {
     switch(pressedKey) {
         case 'left': 
