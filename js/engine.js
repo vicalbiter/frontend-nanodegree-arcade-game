@@ -167,6 +167,13 @@ var Engine = (function(global) {
                 player.home();
             }
         });
+
+        // Check for the collisions between the player and the collectibles
+        collisionHappened = collectible.collision(player.hitbox);
+        if (collisionHappened) {
+            // Make another collectible appear
+            collectible.setCollectible();
+        }
     }
 
     /* This function does nothing but it could have been a good place to

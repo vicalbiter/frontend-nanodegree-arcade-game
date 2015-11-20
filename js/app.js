@@ -174,19 +174,23 @@ Player.prototype.home = function() {
 
 // Collectibles class
 var Collectible = function() {
-    
-    // Randomly assign which collectible will appear and where
-    this.setCollectible();
+
+    // Initiate the collectible coordinates
+    this.x = 0;
+    this.y = 0;
 
     // Initiate a timer variable that will determine when the collectible will apear/disappear
     this.timer = 0;
 
-    // Create a circular hitbox to check for collisions with other game entities
+    // Create a circular hitbox to check for collisions with the player
     this.hitbox = {
         radius : 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
+
+    // Randomly assign which collectible will appear and where
+    this.setCollectible();
 };
 
 // Update the collectible status (appear, dissapear and change type accordingly)
@@ -219,6 +223,10 @@ Collectible.prototype.setCollectible = function() {
     // Randomly assign the collectible position
     this.setPosition();
 
+    // Update the collectible hitbox
+    this.hitbox.x = this.x + hitboxX;
+    this.hitbox.y = this.y + hitboxY;
+
 };
 
 // Randomly set the x and y parameters of the collectible item
@@ -236,6 +244,22 @@ Collectible.prototype.setPosition = function() {
 // Draw the collectible on the screen
 Collectible.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Check for a collision with the player
+Collectible.prototype.collision = function(playerHitbox) {
+
+    // Calculate distance between the hitboxes' centers
+    var dx = this.hitbox.x - playerHitbox.x;
+    var dy = this.hitbox.y - playerHitbox.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Return a collision if the distance between the hitboxes' centers is less than
+    // the sum of their radius
+    if (distance < this.hitbox.radius + playerHitbox.radius) {
+        return true;
+    }
+
 };
 
 
