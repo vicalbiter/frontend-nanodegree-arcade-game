@@ -94,7 +94,8 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        player.update(dt);
+        collectible.update(dt);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -153,6 +154,8 @@ var Engine = (function(global) {
         });
 
         player.render();
+
+        collectible.render();
     }
 
     // This function checks for collisions between the player and the other game entities
@@ -183,7 +186,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Star.png',
+        'images/Heart.png',
+        'images/Key.png'
     ]);
     Resources.onReady(init);
 

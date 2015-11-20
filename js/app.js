@@ -1,4 +1,4 @@
-// Declare useful global variables to control both player and enemy movement
+// Declare useful global variables
 var distanceX = 101,
     distanceY = 83,
     homeX = 202,
@@ -7,7 +7,8 @@ var distanceX = 101,
     boardWidth = 505,
     boardHeigh = 606,
     hitboxX = 50.5,
-    hitboxY = 41.5;
+    hitboxY = 41.5,
+    changeCollectibleTimer = 10;
 
 
 // Enemies our player must avoid
@@ -171,6 +172,73 @@ Player.prototype.home = function() {
     this.y = homeY;
 }
 
+// Collectibles class
+var Collectible = function() {
+    
+    // Randomly assign which collectible will appear and where
+    this.setCollectible();
+
+    // Initiate a timer variable that will determine when the collectible will apear/disappear
+    this.timer = 0;
+
+    // Create a circular hitbox to check for collisions with other game entities
+    this.hitbox = {
+        radius : 30,
+        x: this.x + hitboxX,
+        y: this.y + hitboxY
+    };
+};
+
+// Update the collectible status (appear, dissapear and change type accordingly)
+Collectible.prototype.update = function(dt) {
+    
+    // Increase the timer every dt
+    this.timer = this.timer + dt;
+
+    // Chance the collectible if the time has elapsed
+    if (this.timer > changeCollectibleTimer) {
+        
+        this.setCollectible();
+
+        // Reset the timer
+        this.timer = 0;
+    }
+
+};
+
+// Randomly assign a collectible image and type
+Collectible.prototype.setCollectible = function() {
+
+    // Assign a random number from 1 to 3 to determine which collectible will appear
+    var collectible = Math.floor((Math.random() * 3) + 1);
+
+    if (collectible === 1) { this.sprite = 'images/Star.png'; }
+    else if (collectible === 2) { this.sprite = 'images/Heart.png'; }
+    else if (collectible === 3) { this.sprite = 'images/Key.png'; }
+
+    // Randomly assign the collectible position
+    this.setPosition();
+
+};
+
+// Randomly set the x and y parameters of the collectible item
+Collectible.prototype.setPosition = function() {
+
+    // Randomly assign a row and a column in which the collectible
+    // will appear (limited to the stone blocks area)
+    var row = Math.floor((Math.random() * 3) + 1);
+    var column = Math.floor((Math.random() * 5));
+
+    this.x = distanceX * column;
+    this.y = distanceY * row;
+};
+
+// Draw the collectible on the screen
+Collectible.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
@@ -180,6 +248,9 @@ allEnemies.push(new Enemy());
 
 // Place the player object in a variable called player
 var player = new Player();
+
+// Place the collectible item in a variable named collectible
+var collectible = new Collectible();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
