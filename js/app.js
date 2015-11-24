@@ -182,21 +182,11 @@ Player.prototype.home = function() {
 // Change the player's health by a certain "amount"
 Player.prototype.changeHealth = function(amount) {
     this.health = this.health + amount;
-
-    if (this.health <= 0) {
-        this.gameOver();
-    }
 };
 
 // Change the player's score by a certain "amount"
 Player.prototype.changeScore = function(amount) {
     this.score = this.score + amount;
-};
-
-// Game Over
-Player.prototype.gameOver = function() {
-    this.home();
-    this.health = 3;
 };
 
 // Collectibles class
@@ -301,15 +291,25 @@ Collectible.prototype.collision = function(playerHitbox) {
 var Scoreboard = function() {
     // Assign a scoreboard div to this scoreboard
     this.scoreboard = '';
-}
+};
 
 // Update the scoreboard with the current game timer, player health and score
 Scoreboard.prototype.update = function(score, health, time) {
-    this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' + 
+    this.scoreboard.innerHTML = '<h2>Scoreboard</h2>' + 
     '<div id="health">Lives: ' + health + '</div>' +
     '<div id="score">Score: ' + score + '</div>' +
     '<div id="timer">Time Left: ' + time + '</div>';
-}
+
+    if (health <= 0) {
+        this.gameOver();
+    }
+};
+
+Scoreboard.prototype.gameOver = function(score) {
+    this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
+    '<h2> Your score:  ' + score + '</h2>';
+};
+
 
 
 // Now instantiate your objects.
