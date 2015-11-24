@@ -289,7 +289,8 @@ Collectible.prototype.collision = function(playerHitbox) {
 
 // Create a Scoreboard Class
 var Scoreboard = function() {
-    // Assign a scoreboard div to this scoreboard
+    // Set a scoreboard variable in which all the game information will be
+    // displayed. This variable should be an element (a 'div') from the DOM.
     this.scoreboard = '';
 };
 
@@ -301,10 +302,11 @@ Scoreboard.prototype.update = function(score, health, time) {
     '<div id="timer">Time Left: ' + time + '</div>';
 
     if (health <= 0) {
-        this.gameOver();
+        this.gameOver(score);
     }
 };
 
+// Display a "Game Over!" message in the scoreboard area
 Scoreboard.prototype.gameOver = function(score) {
     this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
     '<h2> Your score:  ' + score + '</h2>';
