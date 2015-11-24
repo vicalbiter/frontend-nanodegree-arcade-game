@@ -179,6 +179,9 @@ var Collectible = function() {
     this.x = 0;
     this.y = 0;
 
+    // Initiate a variable which will tell the type of collectible this is
+    this.collectibleType = '';
+
     // Initiate a timer variable that will determine when the collectible will apear/disappear
     this.timer = 0;
 
@@ -214,11 +217,13 @@ Collectible.prototype.update = function(dt) {
 Collectible.prototype.setCollectible = function() {
 
     // Assign a random number from 1 to 3 to determine which collectible will appear
-    var collectible = Math.floor((Math.random() * 3) + 1);
+    var collectible = Math.floor((Math.random() * 4) + 1);
 
-    if (collectible === 1) { this.sprite = 'images/Star.png'; }
-    else if (collectible === 2) { this.sprite = 'images/Heart.png'; }
-    else if (collectible === 3) { this.sprite = 'images/Key.png'; }
+    // Set the sprite and the collectible type according to the random generated number
+    if (collectible === 1) { this.sprite = 'images/Heart.png'; this.collectibleType = 'heart'; }
+    else if (collectible === 2) { this.sprite = 'images/GemBlue.png'; this.collectibleType = 'gem'; }
+    else if (collectible === 3) { this.sprite = 'images/GemGreen.png'; this. collectibleType = 'gem'; }
+    else if (collectible === 4) { this.sprite = 'images/GemOrange.png'; this. collectibleType = 'gem'; }
 
     // Randomly assign the collectible position
     this.setPosition();
