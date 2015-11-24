@@ -164,12 +164,14 @@ Player.prototype.handleInput = function(pressedKey) {
 // Check if player has reached the water
 Player.prototype.reachedWater = function() {
     
+    // Score points for reaching the water
+    this.changeScore(2);
+
     // Return the player back to home if it has reached the water
     if (player.y === -10) {
         this.home();
     }
-    
-    // Score points for reaching the water
+
 };
 
 // Send the player back to home
@@ -181,11 +183,20 @@ Player.prototype.home = function() {
 // Change the player's health by a certain "amount"
 Player.prototype.changeHealth = function(amount) {
     this.health = this.health + amount;
+
+    if (this.health <= 0) {
+        player.gameover();
+    }
 };
 
 // Change the player's score by a certain "amount"
 Player.prototype.changeScore = function(amount) {
     this.score = this.score + amount;
+};
+
+// Game Over
+Player.prototype.gameOver = function() {
+
 };
 
 // Collectibles class
@@ -223,7 +234,7 @@ Collectible.prototype.update = function(dt) {
         
         this.setCollectible();
 
-        // Reset the timer
+        // Reset the collectible timer
         this.timer = 0;
     }
 
@@ -247,6 +258,9 @@ Collectible.prototype.setCollectible = function() {
     // Update the collectible hitbox
     this.hitbox.x = this.x + hitboxX;
     this.hitbox.y = this.y + hitboxY;
+
+    // Reset the collectible timer
+    this.timer = 0;
 
 };
 
