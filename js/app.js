@@ -303,11 +303,11 @@ var Scoreboard = function() {
 }
 
 // Update the scoreboard with the current game timer, player health and score
-Scoreboard.prototype.update = function(score, health) {
+Scoreboard.prototype.update = function(score, health, time) {
     this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' + 
-    '<div>Lives: </div>' + score +
-    '<div>Score: </div>' + health +
-    '<div>Time Left: </div>';
+    '<div id="health">Lives: ' + health + '</div>' +
+    '<div id="score">Score: ' + score + '</div>' +
+    '<div id="timer">Time Left: ' + time + '</div>';
 }
 
 
