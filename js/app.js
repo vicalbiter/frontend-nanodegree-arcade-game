@@ -112,6 +112,12 @@ var Player = function() {
     // Assign the home position for the player
     this.home();
 
+    // Assign an initial health
+    this.health = 3;
+
+    // Assign an initial score
+    this.score = 0;
+
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
         radius : 30,
@@ -170,7 +176,17 @@ Player.prototype.reachedWater = function() {
 Player.prototype.home = function() {
     this.x = homeX;
     this.y = homeY;
-}
+};
+
+// Change the player's health by a certain "amount"
+Player.prototype.changeHealth = function(amount) {
+    this.health = this.health + amount;
+};
+
+// Change the player's score by a certain "amount"
+Player.prototype.changeScore = function(amount) {
+    this.score = this.score + amount;
+};
 
 // Collectibles class
 var Collectible = function() {

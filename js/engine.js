@@ -164,6 +164,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             var collisionHappened = enemy.collision(player.hitbox);
             if (collisionHappened) {
+                // Decrease the player's health by one if it collides with an enemy
+                player.changeHealth(-1);
+                // Send the player back to the home position
                 player.home();
             }
         });
@@ -171,6 +174,16 @@ var Engine = (function(global) {
         // Check for the collisions between the player and the collectibles
         collisionHappened = collectible.collision(player.hitbox);
         if (collisionHappened) {
+
+            if (collectible.collectibleType === 'heart') {
+                // Increase the player's health by one if it collides with a heart
+                player.changeHealth(1);
+            }
+            else if (collectible.collectibleType === 'gem') {
+                // Incease the player's score by one if it collides with a gem
+                player.changeScore(1);
+            }
+
             // Make another collectible appear
             collectible.setCollectible();
         }
