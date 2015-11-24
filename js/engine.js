@@ -106,7 +106,7 @@ var Engine = (function(global) {
         });
         player.update(dt);
         collectible.update(dt);
-        board.update(player.health, player.score);
+        board.update(player.score, player.health);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -175,10 +175,11 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             var collisionHappened = enemy.collision(player.hitbox);
             if (collisionHappened) {
-                // Decrease the player's health by one if it collides with an enemy
-                player.changeHealth(-1);
                 // Send the player back to the home position
                 player.home();
+
+                // Decrease the player's health by one if it collides with an enemy
+                player.changeHealth(-1);
             }
         });
 

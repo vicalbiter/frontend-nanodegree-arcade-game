@@ -184,7 +184,7 @@ Player.prototype.changeHealth = function(amount) {
     this.health = this.health + amount;
 
     if (this.health <= 0) {
-        player.gameover();
+        this.gameOver();
     }
 };
 
@@ -195,7 +195,8 @@ Player.prototype.changeScore = function(amount) {
 
 // Game Over
 Player.prototype.gameOver = function() {
-
+    this.home();
+    this.health = 3;
 };
 
 // Collectibles class
