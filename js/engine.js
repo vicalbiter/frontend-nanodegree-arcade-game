@@ -38,6 +38,8 @@ var Engine = (function(global) {
     // Assign the scoreboard we just created to the scoreboard property
     // in the "board" object
     board.scoreboard = scoreboard;
+    board.update(player.score, player.health);
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -106,7 +108,6 @@ var Engine = (function(global) {
         });
         player.update(dt);
         collectible.update(dt);
-        board.update(player.score, player.health);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -180,6 +181,10 @@ var Engine = (function(global) {
 
                 // Decrease the player's health by one if it collides with an enemy
                 player.changeHealth(-1);
+
+                // Update scoreboard
+                board.update(player.score, player.health);
+
             }
         });
 
@@ -195,6 +200,9 @@ var Engine = (function(global) {
                 // Incease the player's score by one if it collides with a gem
                 player.changeScore(1);
             }
+
+            // Update scoreboard
+            board.update(player.score, player.health);
 
             // Make another collectible appear
             collectible.setCollectible();
