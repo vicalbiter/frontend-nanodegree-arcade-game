@@ -297,6 +297,20 @@ Collectible.prototype.collision = function(playerHitbox) {
 
 };
 
+// Create a Scoreboard Class
+var Scoreboard = function() {
+    // Assign a scoreboard div to this scoreboard
+    this.scoreboard = '';
+}
+
+// Update the scoreboard with the current game timer, player health and score
+Scoreboard.prototype.update = function(score, health) {
+    this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' + 
+    '<div>Lives: </div>' + score +
+    '<div>Score: </div>' + health +
+    '<div>Time Left: </div>';
+}
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -310,6 +324,9 @@ var player = new Player();
 
 // Place the collectible item in a variable named collectible
 var collectible = new Collectible();
+
+// Create the scoreboard object by passing global.scoreboard as its parameter
+var board = new Scoreboard();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

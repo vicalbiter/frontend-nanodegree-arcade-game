@@ -29,6 +29,16 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    // Create a new div to store health, game timer and score
+    var scoreboard = doc.createElement('div');
+    scoreboard.id = "scoreboard";
+    scoreboard.innerHTML = "Scoreboard";
+    doc.body.appendChild(scoreboard);
+
+    // Assign the scoreboard we just created to the scoreboard property
+    // in the "board" object
+    board.scoreboard = scoreboard;
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -96,6 +106,7 @@ var Engine = (function(global) {
         });
         player.update(dt);
         collectible.update(dt);
+        board.update(player.health, player.score);
     }
 
     /* This function initially draws the "game level", it will then call
