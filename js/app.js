@@ -8,7 +8,8 @@ var distanceX = 101,
     boardHeigh = 606,
     hitboxX = 50.5,
     hitboxY = 41.5,
-    changeCollectibleTimer = 10;
+    changeCollectibleTimer = 10,
+    timedGameTimer = 5000;
 
 
 // Enemies our player must avoid
@@ -287,30 +288,72 @@ Collectible.prototype.collision = function(playerHitbox) {
 
 };
 
-// Create a Scoreboard Class
-var Scoreboard = function() {
-    // Set a scoreboard variable in which all the game information will be
-    // displayed. This variable should be an element (a 'div') from the DOM.
+// Create a Scoreboard Class in which the player score, health and game timer will be
+// managed
+var Scoreboard = function(score, health) {
+    // Set a variable in which all the player information will be displayed.
+    // This variable should be an element (a 'div') from the DOM.
     this.scoreboard = '';
+
+    // Set a variable in which the game timer will be displayed. This
+    // variable should be an element (a 'div') from the DOM.
+    this.gameTimer = '';
+
+    // Set the initial score and health variables
+    this.score = score;
+    this.health = health;
+
+    // Set the actual game timer
+    this.timedGameTimer = timedGameTimer;
+
+    // Set a flag to identify when the game has finished
+    this.gameFinished = false;
 };
 
-// Update the scoreboard with the current game timer, player health and score
-Scoreboard.prototype.update = function(score, health, time) {
+// Update the scoreboard with the current player score and health
+Scoreboard.prototype.updateSH = function(score, health) {
+
+    // Update the score and health variables
+    this.score = score;
+    this.health = health;
+
     this.scoreboard.innerHTML = '<h2>Scoreboard</h2>' + 
     '<div id="health">Lives: ' + health + '</div>' +
-    '<div id="score">Score: ' + score + '</div>' +
-    '<div id="timer">Time Left: ' + time + '</div>';
+    '<div id="score">Score: ' + score + '</div>';
 
-    if (health <= 0) {
-        this.gameOver(score);
+    // If the player runs out of health, show the "Game Over" message
+    if (this.health <= 0) {
+        this.gameOver();
     }
 };
 
-// Display a "Game Over!" message in the scoreboard area
-Scoreboard.prototype.gameOver = function(score) {
-    this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
-    '<h2> Your score:  ' + score + '</h2>';
+// Update the gameTimer and show it on-screen
+Scoreboard.prototype.updateGameTimer = function(dt) {
+    // Only keep counting when the game has not finished
+    if (!this.gameFinished) {
+        this.timedGameTimer = this.timedGameTimer - dt*1000;
+        this.gameTimer.innerHTML = '<h3>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h3>' 
+    }
+
+    // If the game timer runs out, show the "Game Over" message
+    if (this.timedGameTimer <= 0) {
+        this.gameOver();
+    }
 };
+
+// Reset the gameTimer
+Scoreboard.prototype.resetGame = function() {
+    this.timedGameTimer = timedGameTimer;
+    this.gameFinished = false;
+};
+
+// Display a "Game Over!" message in the scoreboard area
+Scoreboard.prototype.gameOver = function() {
+    this.gameFinished = true;
+    this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
+    '<h2> Your score:  ' + this.score + '</h2>';
+};
+
 
 
 

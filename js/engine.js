@@ -29,16 +29,26 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
-    // Create a new div to store health, game timer and score
+    // Create a new div to store health and score
     var scoreboard = doc.createElement('div');
     scoreboard.id = "scoreboard";
     scoreboard.innerHTML = "Scoreboard";
     doc.body.appendChild(scoreboard);
 
-    // Assign the scoreboard we just created to the scoreboard property
-    // in the "board" object
+    // Create a new div to store the game timer
+    var gameTimer = doc.createElement('div');
+    gameTimer.id = "gameTimer";
+    gameTimer.innerHTML = "Time Left";
+    doc.body.appendChild(gameTimer);
+
+    // Assign the scoreboard div we just created to the scoreboard property
+    // in the "board" object, and the gameTimer div to the gameTimer property
     board.scoreboard = scoreboard;
-    board.update(player.score, player.health);
+    board.gameTimer = gameTimer;
+
+    // Initialize the scoreboard
+    board.updateSH(player.score, player.health);
+
 
 
     /* This function serves as the kickoff point for the game loop itself
@@ -108,6 +118,7 @@ var Engine = (function(global) {
         });
         player.update(dt);
         collectible.update(dt);
+        board.updateGameTimer(dt);
     }
 
     /* This function initially draws the "game level", it will then call
@@ -183,7 +194,7 @@ var Engine = (function(global) {
                 player.changeHealth(-1);
 
                 // Update scoreboard
-                board.update(player.score, player.health);
+                board.updateSH(player.score, player.health);
 
             }
         });
@@ -202,7 +213,7 @@ var Engine = (function(global) {
             }
 
             // Update scoreboard
-            board.update(player.score, player.health);
+            board.updateSH(player.score, player.health);
 
             // Make another collectible appear
             collectible.setCollectible();
