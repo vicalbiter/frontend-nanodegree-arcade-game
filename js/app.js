@@ -163,12 +163,11 @@ Player.prototype.handleInput = function(pressedKey) {
 
 // Check if player has reached the water
 Player.prototype.reachedWater = function() {
-    
-    // Score points for reaching the water
-    this.changeScore(2);
 
-    // Return the player back to home if it has reached the water
+    // If the player has reached the water, score some points and then return it 
+    // to its home position
     if (player.y === -10) {
+        this.changeScore(2);
         this.home();
     }
 
