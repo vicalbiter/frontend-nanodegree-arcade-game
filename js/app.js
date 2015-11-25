@@ -11,7 +11,7 @@ var distanceX = 101,
     initialHealth = 3,
     initialScore = 0,
     changeCollectibleTimer = 10,
-    timedGameTimer = 5000;
+    masterTimer = 5000;
 
 
 // Enemies our player must avoid
@@ -130,6 +130,9 @@ var Player = function() {
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
+
+    // Initiate a flag that will check for when the player reaches the water
+    this.scoreWater = false;
 };
 
 // Update the player's position
@@ -140,7 +143,7 @@ Player.prototype.update = function(dt) {
     this.hitbox.y = this.y + hitboxY;
 
     // Check if the player has reached the water
-    this.reachedWater();
+    this.scoreWater = this.reachedWater();
 };
 
 // Draw the player on the screen
@@ -175,7 +178,10 @@ Player.prototype.reachedWater = function() {
     if (player.y === -10) {
         this.changeScore(2);
         this.home();
+        return true;
     }
+
+    return false;
 
 };
 
@@ -321,13 +327,16 @@ var Scoreboard = function(score, health) {
     this.health = health;
 
     // Set the actual game timer
-    this.timedGameTimer = timedGameTimer;
+    this.timedGameTimer = masterTimer;
 
     // Set a flag to identify when the game has finished
     this.gameFinished = false;
 
     // Set a flag to identify when the user wants to restart the game
     this.restartGame = false;
+
+    // Set a flag to identify when the game is paused
+    this.gamePaused = true;
 };
 
 // Update the scoreboard with the current player score and health
@@ -345,14 +354,15 @@ Scoreboard.prototype.updateSH = function(score, health) {
     if (this.health <= 0) {
         this.gameOver();
     }
+
 };
 
 // Update the gameTimer and show it on-screen
 Scoreboard.prototype.updateGameTimer = function(dt) {
     // Only keep counting when the game has not finished
-    if (!this.gameFinished) {
+    if (!this.gameFinished && !this.gamePaused) {
         this.timedGameTimer = this.timedGameTimer - dt*1000;
-        this.gameTimer.innerHTML = '<h3>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h3>' 
+        this.gameTimer.innerHTML = '<h3>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h3>'; 
     }
 
     // If the game timer runs out, show the "Game Over" message
@@ -368,6 +378,10 @@ Scoreboard.prototype.gameOver = function() {
     '<h2> Your score:  ' + this.score + '</h2>';
 };
 
+Scoreboard.prototype.pause = function() {
+    this.scoreboard.innerHTML = '<h2>Press "p" to Pause/Unpause the game! </h2>';
+};
+
 // Handle input keys for starting, pausing and restarting the game
 Scoreboard.prototype.handleInput = function(pressedKey) {
         switch(pressedKey) {
@@ -375,17 +389,23 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
         case 'a': 
             this.resetGame = true;
             break;
+
+        // Key for pausing the game
+        case 'b':
+            if (this.gamePaused) {
+                this.gamePaused = false;
+            }
+            else { this.gamePaused = true; }
+            break;
     }
 };
 
 // Reset the game
 Scoreboard.prototype.reset = function(player) {
-    this.timedGameTimer = timedGameTimer;
+    this.timedGameTimer = masterTimer;
     this.updateSH(player.score, player.health);
     this.gameFinished = false;
 };
-
-
 
 
 // Now instantiate your objects.
@@ -412,9 +432,13 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        65: 'a'
+        65: 'a',
+        66: 'b'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    // Only allow the player to be moved if the game is not paused nor finished
+    if (!board.gameFinished && !board.gamePaused) {
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
     board.handleInput(allowedKeys[e.keyCode]);
 });

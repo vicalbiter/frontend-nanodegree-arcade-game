@@ -112,12 +112,21 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
-        });
-        player.update(dt);
-        collectible.update(dt);
-        board.updateGameTimer(dt);
+        // Keep updating all entities if the game is not paused
+        if (!board.gamePaused && !board.gameFinished) {
+            allEnemies.forEach(function(enemy) {
+                enemy.update(dt);
+            });
+            player.update(dt);
+            collectible.update(dt);
+            board.updateGameTimer(dt);
+        }
+
+        // If the player has reached the water, update the scoreboard
+        if (player.scoreWater) {
+            board.updateSH(player.score, player.health);
+            player.scoreWater = false;
+        }
 
         // If the player has given input to reset the game, restart all the
         // conditions to do so
