@@ -38,7 +38,6 @@ var Engine = (function(global) {
     // Create a new div to store the game timer
     var gameTimer = doc.createElement('div');
     gameTimer.id = "gameTimer";
-    gameTimer.innerHTML = "Time Left";
     doc.body.appendChild(gameTimer);
 
     // Assign the scoreboard div we just created to the scoreboard property
@@ -119,6 +118,23 @@ var Engine = (function(global) {
         player.update(dt);
         collectible.update(dt);
         board.updateGameTimer(dt);
+
+        // If the player has given input to reset the game, restart all the
+        // conditions to do so
+        if (board.resetGame) {
+            resetGame();
+        }
+    }
+
+    // This function calls the reset method in each of the game entities
+    function resetGame() {
+        player.reset();
+        allEnemies.forEach(function(enemy) {
+            enemy.reset();
+        });
+        collectible.reset();
+        board.reset(player);
+        board.resetGame = false;
     }
 
     /* This function initially draws the "game level", it will then call

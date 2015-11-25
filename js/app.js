@@ -8,6 +8,8 @@ var distanceX = 101,
     boardHeigh = 606,
     hitboxX = 50.5,
     hitboxY = 41.5,
+    initialHealth = 3,
+    initialScore = 0,
     changeCollectibleTimer = 10,
     timedGameTimer = 5000;
 
@@ -102,6 +104,13 @@ Enemy.prototype.collision = function(playerHitbox) {
 
 };
 
+// Reset the enemy 
+Enemy.prototype.reset = function() {
+    this.x = enemyHomeX;
+    this.y = this.setRow();
+    this.setSpeed();
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -110,14 +119,10 @@ var Player = function() {
     // Assign the image for the player
     this.sprite = 'images/char-boy.png';
 
-    // Assign the home position for the player
+    // Assign the home position, the initial health and score for the player
     this.home();
-
-    // Assign an initial health
-    this.health = 3;
-
-    // Assign an initial score
-    this.score = 0;
+    this.health = initialHealth;
+    this.score = initialScore;
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
@@ -188,6 +193,13 @@ Player.prototype.changeHealth = function(amount) {
 // Change the player's score by a certain "amount"
 Player.prototype.changeScore = function(amount) {
     this.score = this.score + amount;
+};
+
+// Reset the player to the home position, with the initial health and score
+Player.prototype.reset = function() {
+    this.home();
+    this.health = initialHealth;
+    this.score = initialScore;
 };
 
 // Collectibles class
@@ -288,6 +300,11 @@ Collectible.prototype.collision = function(playerHitbox) {
 
 };
 
+// Reset the collectible parameters
+Collectible.prototype.reset = function() {
+    this.setCollectible();
+};
+
 // Create a Scoreboard Class in which the player score, health and game timer will be
 // managed
 var Scoreboard = function(score, health) {
@@ -308,6 +325,9 @@ var Scoreboard = function(score, health) {
 
     // Set a flag to identify when the game has finished
     this.gameFinished = false;
+
+    // Set a flag to identify when the user wants to restart the game
+    this.restartGame = false;
 };
 
 // Update the scoreboard with the current player score and health
@@ -341,17 +361,28 @@ Scoreboard.prototype.updateGameTimer = function(dt) {
     }
 };
 
-// Reset the gameTimer
-Scoreboard.prototype.resetGame = function() {
-    this.timedGameTimer = timedGameTimer;
-    this.gameFinished = false;
-};
-
 // Display a "Game Over!" message in the scoreboard area
 Scoreboard.prototype.gameOver = function() {
     this.gameFinished = true;
     this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
     '<h2> Your score:  ' + this.score + '</h2>';
+};
+
+// Handle input keys for starting, pausing and restarting the game
+Scoreboard.prototype.handleInput = function(pressedKey) {
+        switch(pressedKey) {
+        // Key for restarting the game
+        case 'a': 
+            this.resetGame = true;
+            break;
+    }
+};
+
+// Reset the game
+Scoreboard.prototype.reset = function(player) {
+    this.timedGameTimer = timedGameTimer;
+    this.updateSH(player.score, player.health);
+    this.gameFinished = false;
 };
 
 
@@ -380,8 +411,10 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        65: 'a'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    board.handleInput(allowedKeys[e.keyCode]);
 });
