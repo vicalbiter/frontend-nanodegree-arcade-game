@@ -248,6 +248,8 @@ var Engine = (function(global) {
             // Make another collectible appear
             collectible.setCollectible();
         }
+
+        collisionHappened = false;
     }
 
     /* This function does nothing but it could have been a good place to

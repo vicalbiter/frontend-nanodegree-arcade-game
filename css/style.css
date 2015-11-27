@@ -13,16 +13,21 @@ h2 {
 	font-size: 20px;
 }
 
-#scoreboard {
-
+.instructions {
+	font-style: italic;
+	text-align: center;
 }
 
 #health {
+	font-size: 25px;
+	font-weight: bold;
 	display: inline;
 	margin-right: 30px;
 }
 
 #score {
+	font-size: 25px;
+	font-weight: bold;
 	display: inline;
 }
 
