@@ -349,9 +349,11 @@ Scoreboard.prototype.updateSH = function(score, health) {
     this.score = score;
     this.health = health;
 
-    this.scoreboard.innerHTML = '<h2>Scoreboard</h2>' + 
+    this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' + 
     '<div id="health">Lives: ' + health + '</div>' +
     '<div id="score">Score: ' + score + '</div>';
+
+    // Display information on how to pause the game
 
     // If the player runs out of health, show the "Game Over" message
     if (this.health <= 0) {
@@ -365,7 +367,7 @@ Scoreboard.prototype.updateGameTimer = function(dt) {
     // Only keep counting when the game has not finished
     if (!this.gameFinished && !this.gamePaused) {
         this.timedGameTimer = this.timedGameTimer - dt*1000;
-        this.gameTimer.innerHTML = '<h3>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h3>'; 
+        this.gameTimer.innerHTML = '<h2>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h2>'; 
     }
 
     // Do not show any message if the game is paused
@@ -383,17 +385,24 @@ Scoreboard.prototype.updateGameTimer = function(dt) {
 Scoreboard.prototype.gameOver = function() {
     this.gameFinished = true;
     this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
-    '<h2> Your score:  ' + this.score + '</h2>';
+    '<h1> Your score:  ' + this.score + '</h1>' +
+    '<h2>Press "r" to reset</h2>';
+    this.gameTimer.innerHTML = '';
 };
 
 // Display the pause/unpause message
 Scoreboard.prototype.pause = function() {
-    this.scoreboard.innerHTML = '<h2>Press "p" to Pause/Unpause the game! </h2>';
+    this.scoreboard.innerHTML = '<h1>Press "p" to unpause the game </h1>' +
+    '<h3>... Or press "r" to reset</h3>';
 };
 
 // Display the "Start game" message
 Scoreboard.prototype.start = function() {
-    this.scoreboard.innerHTML = '<h2>Press "s" to start the game! </h2>';
+    this.scoreboard.innerHTML = '<h1>Press "s" to start the game! </h1>' + 
+    '<h2>Instructions</h2>' +
+    '<div class="instructions">-Use the keyboard arrows to move your character</h2>' +
+    '<div class="instructions">-Press "p" to pause the game</h2>' +
+    '<div class="instructions">-Before starting, you can change your by character pressing "c"</h3>';
     // Don't show the timer when the "Start game" message is on screen
     this.gameTimer.innerHTML = '';
 };
@@ -402,12 +411,12 @@ Scoreboard.prototype.start = function() {
 Scoreboard.prototype.handleInput = function(pressedKey) {
         switch(pressedKey) {
         // Key for restarting the game
-        case 'a': 
+        case 'r': 
             this.resetGame = true;
             break;
 
         // Key for pausing the game
-        case 'b':
+        case 'p':
             if (this.gamePaused && this.startGame) {
                 this.gamePaused = false;
                 this.updateSH(this.score, this.health);
@@ -419,7 +428,7 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
             break;
 
         // Key for starting the game
-        case 'c':
+        case 's':
         if (!this.startGame) {
             this.startGame = true;
             this.gamePaused = false;
@@ -463,9 +472,9 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        65: 'a',
-        66: 'b',
-        67: 'c'
+        82: 'r',
+        80: 'p',
+        83: 's'
     };
 
     // Only allow the player to be moved if the game is not paused nor finished

@@ -29,16 +29,16 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+    // Create a new div to store the game timer
+    var gameTimer = doc.createElement('div');
+    gameTimer.id = "gameTimer";
+    doc.body.appendChild(gameTimer);
+
     // Create a new div to store health and score
     var scoreboard = doc.createElement('div');
     scoreboard.id = "scoreboard";
     scoreboard.innerHTML = "Scoreboard";
     doc.body.appendChild(scoreboard);
-
-    // Create a new div to store the game timer
-    var gameTimer = doc.createElement('div');
-    gameTimer.id = "gameTimer";
-    doc.body.appendChild(gameTimer);
 
     // Assign the scoreboard div we just created to the scoreboard property
     // in the "board" object, and the gameTimer div to the gameTimer property
