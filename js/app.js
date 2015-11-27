@@ -337,6 +337,9 @@ var Scoreboard = function(score, health) {
 
     // Set a flag to identify when the game is paused
     this.gamePaused = true;
+
+    // Set a flag to identify when the game is started
+    this.startGame = false;
 };
 
 // Update the scoreboard with the current player score and health
@@ -365,6 +368,11 @@ Scoreboard.prototype.updateGameTimer = function(dt) {
         this.gameTimer.innerHTML = '<h3>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h3>'; 
     }
 
+    // Do not show any message if the game is paused
+    if (this.gamePaused) {
+        this.gameTimer.innerHTML = '';
+    }
+
     // If the game timer runs out, show the "Game Over" message
     if (this.timedGameTimer <= 0) {
         this.gameOver();
@@ -378,8 +386,16 @@ Scoreboard.prototype.gameOver = function() {
     '<h2> Your score:  ' + this.score + '</h2>';
 };
 
+// Display the pause/unpause message
 Scoreboard.prototype.pause = function() {
     this.scoreboard.innerHTML = '<h2>Press "p" to Pause/Unpause the game! </h2>';
+};
+
+// Display the "Start game" message
+Scoreboard.prototype.start = function() {
+    this.scoreboard.innerHTML = '<h2>Press "s" to start the game! </h2>';
+    // Don't show the timer when the "Start game" message is on screen
+    this.gameTimer.innerHTML = '';
 };
 
 // Handle input keys for starting, pausing and restarting the game
@@ -392,11 +408,24 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
 
         // Key for pausing the game
         case 'b':
-            if (this.gamePaused) {
+            if (this.gamePaused && this.startGame) {
                 this.gamePaused = false;
+                this.updateSH(this.score, this.health);
             }
-            else { this.gamePaused = true; }
+            else {
+                this.gamePaused = true;
+                this.pause();
+            }
             break;
+
+        // Key for starting the game
+        case 'c':
+        if (!this.startGame) {
+            this.startGame = true;
+            this.gamePaused = false;
+            this.updateSH(this.score, this.health);
+            break;
+        }
     }
 };
 
@@ -405,6 +434,8 @@ Scoreboard.prototype.reset = function(player) {
     this.timedGameTimer = masterTimer;
     this.updateSH(player.score, player.health);
     this.gameFinished = false;
+    this.startGame = false;
+    this.gamePaused = true;
 };
 
 
@@ -433,7 +464,8 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down',
         65: 'a',
-        66: 'b'
+        66: 'b',
+        67: 'c'
     };
 
     // Only allow the player to be moved if the game is not paused nor finished

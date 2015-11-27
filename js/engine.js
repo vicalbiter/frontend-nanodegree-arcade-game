@@ -133,6 +133,11 @@ var Engine = (function(global) {
         if (board.resetGame) {
             resetGame();
         }
+
+        // If the game has not started, display the "Start game" information
+        if (!board.startGame) {
+            board.start();
+        }
     }
 
     // This function calls the reset method in each of the game entities
