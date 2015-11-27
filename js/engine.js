@@ -138,6 +138,13 @@ var Engine = (function(global) {
         if (!board.startGame) {
             board.start();
         }
+
+        // If the character wants to change character, run the changeCharacter
+        // function in player
+        if (board.changeCharacter) {
+            player.changeCharacter();
+            board.changeCharacter = false;
+        }
     }
 
     // This function calls the reset method in each of the game entities
@@ -213,43 +220,48 @@ var Engine = (function(global) {
 
     // This function checks for collisions between the player and the other game entities
     function checkCollisions() {
-        // Check for the collisions between the player and the enemies
-        allEnemies.forEach(function(enemy) {
-            var collisionHappened = enemy.collision(player.hitbox);
-            if (collisionHappened) {
-                // Send the player back to the home position
-                player.home();
 
-                // Decrease the player's health by one if it collides with an enemy
-                player.changeHealth(-1);
+        // Check for the collisions only if the game is not paused nor finished
+        if (!board.gamePaused && !board.gameFinished) {
+
+            // Check for the collisions between the player and the enemies
+            allEnemies.forEach(function(enemy) {
+                var collisionHappened = enemy.collision(player.hitbox);
+                if (collisionHappened) {
+                    // Send the player back to the home position
+                    player.home();
+
+                    // Decrease the player's health by one if it collides with an enemy
+                    player.changeHealth(-1);
+
+                    // Update scoreboard
+                    board.updateSH(player.score, player.health);
+
+                }
+            });
+
+            // Check for the collisions between the player and the collectibles
+            collisionHappened = collectible.collision(player.hitbox);
+            if (collisionHappened) {
+
+                if (collectible.collectibleType === 'heart') {
+                    // Increase the player's health by one if it collides with a heart
+                    player.changeHealth(1);
+                }
+                else if (collectible.collectibleType === 'gem') {
+                    // Incease the player's score by one if it collides with a gem
+                    player.changeScore(1);
+                }
 
                 // Update scoreboard
                 board.updateSH(player.score, player.health);
 
+                // Make another collectible appear
+                collectible.setCollectible();
+
             }
-        });
-
-        // Check for the collisions between the player and the collectibles
-        collisionHappened = collectible.collision(player.hitbox);
-        if (collisionHappened) {
-
-            if (collectible.collectibleType === 'heart') {
-                // Increase the player's health by one if it collides with a heart
-                player.changeHealth(1);
-            }
-            else if (collectible.collectibleType === 'gem') {
-                // Incease the player's score by one if it collides with a gem
-                player.changeScore(1);
-            }
-
-            // Update scoreboard
-            board.updateSH(player.score, player.health);
-
-            // Make another collectible appear
-            collectible.setCollectible();
         }
 
-        collisionHappened = false;
     }
 
     /* This function does nothing but it could have been a good place to
@@ -273,7 +285,8 @@ var Engine = (function(global) {
         'images/Heart.png',
         'images/GemBlue.png',
         'images/GemGreen.png',
-        'images/GemOrange.png'
+        'images/GemOrange.png',
+        'images/char-pink-girl.png'
     ]);
     Resources.onReady(init);
 

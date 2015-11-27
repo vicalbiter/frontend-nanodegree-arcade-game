@@ -133,6 +133,9 @@ var Player = function() {
 
     // Initiate a flag that will check for when the player reaches the water
     this.scoreWater = false;
+
+    // Initiate a character ID, so that a sprite is assigned to this value
+    this.characterID = 0;
 };
 
 // Update the player's position
@@ -206,6 +209,25 @@ Player.prototype.reset = function() {
     this.home();
     this.health = initialHealth;
     this.score = initialScore;
+};
+
+// Change the character
+Player.prototype.changeCharacter = function() {
+    // Look for the next character ID when the function is called
+    this.characterID++;
+
+    // As there are only two characters, keep characterID with values of [0, 1]
+    if (this.characterID === 2) { this.characterID = 0; }
+
+    // Make a lookup for the corresponding sprite
+    switch (this.characterID) {
+        case 0:
+            this.sprite = 'images/char-boy.png';
+            break;
+        case 1:
+            this.sprite = 'images/char-pink-girl.png';
+            break;
+    }
 };
 
 // Collectibles class
@@ -340,6 +362,9 @@ var Scoreboard = function(score, health) {
 
     // Set a flag to identify when the game is started
     this.startGame = false;
+
+    // Set a flag to identify when the user wants to change character
+    this.changeCharacter = false;
 };
 
 // Update the scoreboard with the current player score and health
@@ -435,6 +460,13 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
             this.updateSH(this.score, this.health);
             break;
         }
+
+        // Key for changing the character when the game has
+        // not started
+        case 'c':
+        if (!this.startGame) {
+            this.changeCharacter = true;
+        }
     }
 };
 
@@ -472,8 +504,9 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        82: 'r',
+        67: 'c',
         80: 'p',
+        82: 'r',
         83: 's'
     };
 
