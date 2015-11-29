@@ -36,7 +36,7 @@ var Enemy = function() {
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
-        radius : 30,
+        radius: 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
@@ -51,7 +51,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 
     // Move the enemy acording to its speed
-    this.x = this.x + this.speed*dt;
+    this.x = this.x + this.speed * dt;
 
     // Update the row and speed of the enemy when it finishes its run
     if (this.x > boardWidth) {
@@ -77,9 +77,13 @@ Enemy.prototype.setRow = function() {
     // Generate random number between 1 and 3
     var row = Math.floor((Math.random() * 3) + 1);
     // Row 1 : 60;   Row 2 : 143;   Row 3 : 226;
-    if (row === 1) { return 60; }
-    else if (row === 2) { return 143; }
-    else if (row === 3) { return 226; }
+    if (row === 1) {
+        return 60;
+    } else if (row === 2) {
+        return 143;
+    } else if (row === 3) {
+        return 226;
+    }
 };
 
 // Randomly select enemy speed
@@ -131,7 +135,7 @@ var Player = function() {
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
-        radius : 30,
+        radius: 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
@@ -162,18 +166,26 @@ Player.prototype.render = function() {
 // Change the player position according to keyboard input
 // The movement is limited so that the player won't move outside the canvas
 Player.prototype.handleInput = function(pressedKey) {
-    switch(pressedKey) {
-        case 'left': 
-            if (this.x > 0) { this.x = this.x - distanceX; }
+    switch (pressedKey) {
+        case 'left':
+            if (this.x > 0) {
+                this.x = this.x - distanceX;
+            }
             break;
         case 'up':
-            if (this.y > -10) { this.y = this.y - distanceY; }
+            if (this.y > -10) {
+                this.y = this.y - distanceY;
+            }
             break;
         case 'right':
-            if (this.x < 404) { this.x = this.x + distanceX; }
+            if (this.x < 404) {
+                this.x = this.x + distanceX;
+            }
             break;
         case 'down':
-            if (this.y < 405) { this.y = this.y + distanceY; }
+            if (this.y < 405) {
+                this.y = this.y + distanceY;
+            }
             break;
     }
 };
@@ -222,7 +234,9 @@ Player.prototype.changeCharacter = function() {
     this.characterID++;
 
     // As there are only two characters, keep characterID with values of [0, 1]
-    if (this.characterID === 2) { this.characterID = 0; }
+    if (this.characterID === 2) {
+        this.characterID = 0;
+    }
 
     // Make a lookup for the corresponding sprite
     switch (this.characterID) {
@@ -250,7 +264,7 @@ var Collectible = function() {
 
     // Create a circular hitbox to check for collisions with the player
     this.hitbox = {
-        radius : 30,
+        radius: 30,
         x: this.x + hitboxX,
         y: this.y + hitboxY
     };
@@ -261,13 +275,13 @@ var Collectible = function() {
 
 // Update the collectible status (appear, dissapear and change type accordingly)
 Collectible.prototype.update = function(dt) {
-    
+
     // Increase the timer every dt
     this.timer = this.timer + dt;
 
     // Chance the collectible if the time has elapsed
     if (this.timer > changeCollectibleTimer) {
-        
+
         this.setCollectible();
 
         // Reset the collectible timer
@@ -283,10 +297,19 @@ Collectible.prototype.setCollectible = function() {
     var collectible = Math.floor((Math.random() * 4) + 1);
 
     // Set the sprite and the collectible type according to the random generated number
-    if (collectible === 1) { this.sprite = 'images/Heart.png'; this.collectibleType = 'heart'; }
-    else if (collectible === 2) { this.sprite = 'images/GemBlue.png'; this.collectibleType = 'gem'; }
-    else if (collectible === 3) { this.sprite = 'images/GemGreen.png'; this. collectibleType = 'gem'; }
-    else if (collectible === 4) { this.sprite = 'images/GemOrange.png'; this. collectibleType = 'gem'; }
+    if (collectible === 1) {
+        this.sprite = 'images/Heart.png';
+        this.collectibleType = 'heart';
+    } else if (collectible === 2) {
+        this.sprite = 'images/GemBlue.png';
+        this.collectibleType = 'gem';
+    } else if (collectible === 3) {
+        this.sprite = 'images/GemGreen.png';
+        this.collectibleType = 'gem';
+    } else if (collectible === 4) {
+        this.sprite = 'images/GemOrange.png';
+        this.collectibleType = 'gem';
+    }
 
     // Randomly assign the collectible position
     this.setPosition();
@@ -382,9 +405,9 @@ Scoreboard.prototype.updateSH = function(score, health) {
     this.score = score;
     this.health = health;
 
-    this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' + 
-    '<div id="health">Lives: ' + health + '</div>' +
-    '<div id="score">Score: ' + score + '</div>';
+    this.scoreboard.innerHTML = '<h1>Scoreboard</h1>' +
+        '<div id="health">Lives: ' + health + '</div>' +
+        '<div id="score">Score: ' + score + '</div>';
 
     // Display information on how to pause the game
 
@@ -399,8 +422,8 @@ Scoreboard.prototype.updateSH = function(score, health) {
 Scoreboard.prototype.updateGameTimer = function(dt) {
     // Only keep counting when the game has not finished
     if (!this.gameFinished && !this.gamePaused) {
-        this.timedGameTimer = this.timedGameTimer - dt*1000;
-        this.gameTimer.innerHTML = '<h2>Time Left: ' + Math.floor(this.timedGameTimer/1000 + 1) + '</h2>'; 
+        this.timedGameTimer = this.timedGameTimer - dt * 1000;
+        this.gameTimer.innerHTML = '<h2>Time Left: ' + Math.floor(this.timedGameTimer / 1000 + 1) + '</h2>';
     }
 
     // Do not show any message if the game is paused
@@ -418,33 +441,33 @@ Scoreboard.prototype.updateGameTimer = function(dt) {
 Scoreboard.prototype.gameOver = function() {
     this.gameFinished = true;
     this.scoreboard.innerHTML = '<h1>Game Over!</h1>' +
-    '<h1> Your score:  ' + this.score + '</h1>' +
-    '<h2>Press "r" to reset</h2>';
+        '<h1> Your score:  ' + this.score + '</h1>' +
+        '<h2>Press "r" to reset</h2>';
     this.gameTimer.innerHTML = '';
 };
 
 // Display the pause/unpause message
 Scoreboard.prototype.pause = function() {
     this.scoreboard.innerHTML = '<h1>Press "p" to unpause the game </h1>' +
-    '<h3>... Or press "r" to reset</h3>';
+        '<h3>... Or press "r" to reset</h3>';
 };
 
 // Display the "Start game" message
 Scoreboard.prototype.start = function() {
-    this.scoreboard.innerHTML = '<h1>Press "s" to start the game! </h1>' + 
-    '<h2>Instructions</h2>' +
-    '<div class="instructions">-Use the keyboard arrows to move your character</h2>' +
-    '<div class="instructions">-Press "p" to pause the game</h2>' +
-    '<div class="instructions">-Before starting, you can change your by character pressing "c"</h3>';
+    this.scoreboard.innerHTML = '<h1>Press "s" to start the game! </h1>' +
+        '<h2>Instructions</h2>' +
+        '<div class="instructions">-Use the keyboard arrows to move your character</h2>' +
+        '<div class="instructions">-Press "p" to pause the game</h2>' +
+        '<div class="instructions">-Before starting, you can change your by character pressing "c"</h3>';
     // Don't show the timer when the "Start game" message is on screen
     this.gameTimer.innerHTML = '';
 };
 
 // Handle input keys for starting, pausing and restarting the game
 Scoreboard.prototype.handleInput = function(pressedKey) {
-        switch(pressedKey) {
+    switch (pressedKey) {
         // Key for restarting the game
-        case 'r': 
+        case 'r':
             this.resetGame = true;
             break;
 
@@ -453,8 +476,7 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
             if (this.gamePaused && this.startGame) {
                 this.gamePaused = false;
                 this.updateSH(this.score, this.health);
-            }
-            else {
+            } else {
                 this.gamePaused = true;
                 this.pause();
             }
