@@ -7,7 +7,7 @@ var distanceX = 101,
     homeY = 405,
     enemyHomeX = -100,
     boardWidth = 505,
-    boardHeigh = 606,
+    boardHeight = 606,
     hitboxX = 50.5,
     hitboxY = 41.5,
     initialHealth = 3,
@@ -462,19 +462,20 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
 
         // Key for starting the game
         case 's':
-        if (!this.startGame) {
-            this.startGame = true;
-            this.gamePaused = false;
-            this.updateSH(this.score, this.health);
+            if (!this.startGame) {
+                this.startGame = true;
+                this.gamePaused = false;
+                this.updateSH(this.score, this.health);
+            }
             break;
-        }
 
         // Key for changing the character when the game has
         // not started
         case 'c':
-        if (!this.startGame) {
-            this.changeCharacter = true;
-        }
+            if (!this.startGame) {
+                this.changeCharacter = true;
+            }
+            break;
     }
 };
 
