@@ -16,8 +16,8 @@ $ git clone https://github.com/vicalbiter/frontend-nanodegree-arcade-game.git
 ***
 The main goal of this game is to gather as much points as possible in the span of **1 minute**. You will earn points for:
 
-* Reaching the water
-* Collecting gems (these will randomly appear over the game board)
+* Reaching the water	**2 points**
+* Collecting gems (these will randomly appear over the game board)	**1 point**
 
 Every time you hit an enemy, you will lose lives. However, you can earn more lifes by collecting hearts.
 
