@@ -13,7 +13,7 @@ var distanceX = 101,
     initialHealth = 3,
     initialScore = 0,
     changeCollectibleTimer = 10,
-    masterTimer = 5000;
+    masterTimer = 60000;
 
 
 // Enemies our player must avoid
