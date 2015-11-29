@@ -1,6 +1,8 @@
 // Declare useful global variables
 var distanceX = 101,
     distanceY = 83,
+    offsetX = 25,
+    offsetY = 30,
     homeX = 202,
     homeY = 405,
     enemyHomeX = -100,
@@ -88,7 +90,10 @@ Enemy.prototype.setSpeed = function() {
 
 };
 
-// Check for a collision with the player
+// Implement a method that will look for collisions with the player
+/* As every hitbox is an imaginary circle, the condition to declare a collision
+will be met if both the enemy and the player hitboxes are within a certain
+distance. */
 Enemy.prototype.collision = function(playerHitbox) {
 
     // Calculate distance between the hitboxes' centers
@@ -303,13 +308,16 @@ Collectible.prototype.setPosition = function() {
     var row = Math.floor((Math.random() * 3) + 1);
     var column = Math.floor((Math.random() * 5));
 
-    this.x = distanceX * column;
-    this.y = distanceY * row;
+    // Set the image position on the grid
+    // The offset variables are used to center the images within the squares
+    this.x = (distanceX * column) + offsetX;
+    this.y = (distanceY * row) + offsetY;
 };
 
 // Draw the collectible on the screen
 Collectible.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    // Resize the collectible images to fit the squares
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y, 50, 85);
 };
 
 // Check for a collision with the player
