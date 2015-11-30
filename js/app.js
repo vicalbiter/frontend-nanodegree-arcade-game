@@ -6,6 +6,7 @@ var DISTANCE_X = 101,
     HOME_X = 202,
     HOME_Y = 405,
     ENEMY_HOME_X = -100,
+    BOARD_WIDTH = 505,
     HITBOX_X = 50.5,
     HITBOX_Y = 41.5,
     INITIAL_HEALTH = 3,
@@ -52,7 +53,7 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + this.speed * dt;
 
     // Update the row and speed of the enemy when it finishes its run
-    if (this.x > boardWidth) {
+    if (this.x > BOARD_WIDTH) {
         this.x = ENEMY_HOME_X;
         this.speed = this.setSpeed();
         this.y = this.setRow();
