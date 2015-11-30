@@ -292,20 +292,20 @@ Collectible.prototype.update = function(dt) {
 // Randomly assign a collectible image and type
 Collectible.prototype.setCollectible = function() {
 
-    // Assign a random number from 1 to 3 to determine which collectible will appear
-    var collectible = Math.floor((Math.random() * 4) + 1);
+    // Assign a random number from 1 to 3 to determine which type of collectible will appear
+    var type = Math.floor((Math.random() * 4) + 1);
 
     // Set the sprite and the collectible type according to the random generated number
-    if (collectible === 1) {
+    if (type === 1) {
         this.sprite = 'images/Heart.png';
         this.collectibleType = 'heart';
-    } else if (collectible === 2) {
+    } else if (type === 2) {
         this.sprite = 'images/GemBlue.png';
         this.collectibleType = 'gem';
-    } else if (collectible === 3) {
+    } else if (type === 3) {
         this.sprite = 'images/GemGreen.png';
         this.collectibleType = 'gem';
-    } else if (collectible === 4) {
+    } else if (type === 4) {
         this.sprite = 'images/GemOrange.png';
         this.collectibleType = 'gem';
     }
