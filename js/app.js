@@ -194,7 +194,7 @@ Player.prototype.reachedWater = function() {
 
     // If the player has reached the water, score some points and then return it 
     // to its home position
-    if (player.y === -10) {
+    if (this.y === -10) {
         this.changeScore(2);
         this.home();
         return true;
