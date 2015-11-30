@@ -264,8 +264,8 @@ var Collectible = function() {
     // Create a circular hitbox to check for collisions with the player
     this.hitbox = {
         radius: 30,
-        x: this.x + HITBOX_X,
-        y: this.y + HITBOX_Y
+        x: this.x + HITBOX_X - OFFSET_X,
+        y: this.y + HITBOX_Y - OFFSET_Y
     };
 
     // Randomly assign which collectible will appear and where
@@ -314,8 +314,8 @@ Collectible.prototype.setCollectible = function() {
     this.setPosition();
 
     // Update the collectible hitbox
-    this.hitbox.x = this.x + HITBOX_X;
-    this.hitbox.y = this.y + HITBOX_Y;
+    this.hitbox.x = this.x + HITBOX_X - OFFSET_X;
+    this.hitbox.y = this.y + HITBOX_Y - OFFSET_Y;
 
     // Reset the collectible timer
     this.timer = 0;
