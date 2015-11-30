@@ -24,7 +24,7 @@ Every time you hit an enemy, you will lose lives. However, you can earn more lif
 # Game controls
 ***
 * To reset the game, press the "r" key
-* To start a new game, press the "s" key to begin.
+* To start a new game, press the "s" key
 * To pause/unpause the game, press the "p" key
 * **Press the keyboard arrows to move your character**
 * You can change your character every time a new game starts, by pressing the "c" key
