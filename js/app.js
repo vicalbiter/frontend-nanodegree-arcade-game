@@ -1,19 +1,17 @@
 // Declare useful global variables
-var distanceX = 101,
-    distanceY = 83,
-    offsetX = 25,
-    offsetY = 30,
-    homeX = 202,
-    homeY = 405,
-    enemyHomeX = -100,
-    boardWidth = 505,
-    boardHeight = 606,
-    hitboxX = 50.5,
-    hitboxY = 41.5,
-    initialHealth = 3,
-    initialScore = 0,
-    changeCollectibleTimer = 10,
-    masterTimer = 60000;
+var DISTANCE_X = 101,
+    DISTANCE_Y = 83,
+    OFFSET_X = 25,
+    OFFSET_Y = 30,
+    HOME_X = 202,
+    HOME_Y = 405,
+    ENEMY_HOME_X = -100,
+    HITBOX_X = 50.5,
+    HITBOX_Y = 41.5,
+    INITIAL_HEALTH = 3,
+    INITIAL_SCORE = 0,
+    CHANGE_COLLECTIBLE_TIMER = 10,
+    MASTER_TIMER = 60000;
 
 
 // Enemies our player must avoid
@@ -26,7 +24,7 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
 
     // Set the initial x position in which the enemy will appear
-    this.x = enemyHomeX;
+    this.x = ENEMY_HOME_X;
 
     // Set the initial row (y position) in which the enemy will appear
     this.y = this.setRow();
@@ -37,8 +35,8 @@ var Enemy = function() {
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
         radius: 30,
-        x: this.x + hitboxX,
-        y: this.y + hitboxY
+        x: this.x + HITBOX_X,
+        y: this.y + HITBOX_Y
     };
 
 };
@@ -55,14 +53,14 @@ Enemy.prototype.update = function(dt) {
 
     // Update the row and speed of the enemy when it finishes its run
     if (this.x > boardWidth) {
-        this.x = enemyHomeX;
+        this.x = ENEMY_HOME_X;
         this.speed = this.setSpeed();
         this.y = this.setRow();
     }
 
     // Update the hitbox
-    this.hitbox.x = this.x + hitboxX;
-    this.hitbox.y = this.y + hitboxY;
+    this.hitbox.x = this.x + HITBOX_X;
+    this.hitbox.y = this.y + HITBOX_Y;
 
 };
 
@@ -115,7 +113,7 @@ Enemy.prototype.collision = function(playerHitbox) {
 
 // Reset the enemy 
 Enemy.prototype.reset = function() {
-    this.x = enemyHomeX;
+    this.x = ENEMY_HOME_X;
     this.y = this.setRow();
     this.setSpeed();
 };
@@ -130,14 +128,14 @@ var Player = function() {
 
     // Assign the home position, the initial health and score for the player
     this.home();
-    this.health = initialHealth;
-    this.score = initialScore;
+    this.health = INITIAL_HEALTH;
+    this.score = INITIAL_SCORE;
 
     // Create a circular hitbox to check for collisions with other game entities
     this.hitbox = {
         radius: 30,
-        x: this.x + hitboxX,
-        y: this.y + hitboxY
+        x: this.x + HITBOX_X,
+        y: this.y + HITBOX_Y
     };
 
     // Initiate a flag that will check for when the player reaches the water
@@ -151,8 +149,8 @@ var Player = function() {
 Player.prototype.update = function(dt) {
 
     // Update the hitbox
-    this.hitbox.x = this.x + hitboxX;
-    this.hitbox.y = this.y + hitboxY;
+    this.hitbox.x = this.x + HITBOX_X;
+    this.hitbox.y = this.y + HITBOX_Y;
 
     // Check if the player has reached the water
     this.scoreWater = this.reachedWater();
@@ -169,22 +167,22 @@ Player.prototype.handleInput = function(pressedKey) {
     switch (pressedKey) {
         case 'left':
             if (this.x > 0) {
-                this.x = this.x - distanceX;
+                this.x = this.x - DISTANCE_X;
             }
             break;
         case 'up':
             if (this.y > -10) {
-                this.y = this.y - distanceY;
+                this.y = this.y - DISTANCE_Y;
             }
             break;
         case 'right':
             if (this.x < 404) {
-                this.x = this.x + distanceX;
+                this.x = this.x + DISTANCE_X;
             }
             break;
         case 'down':
             if (this.y < 405) {
-                this.y = this.y + distanceY;
+                this.y = this.y + DISTANCE_Y;
             }
             break;
     }
@@ -207,8 +205,8 @@ Player.prototype.reachedWater = function() {
 
 // Send the player back to home
 Player.prototype.home = function() {
-    this.x = homeX;
-    this.y = homeY;
+    this.x = HOME_X;
+    this.y = HOME_Y;
 };
 
 // Change the player's health by a certain "amount"
@@ -224,8 +222,8 @@ Player.prototype.changeScore = function(amount) {
 // Reset the player to the home position, with the initial health and score
 Player.prototype.reset = function() {
     this.home();
-    this.health = initialHealth;
-    this.score = initialScore;
+    this.health = INITIAL_HEALTH;
+    this.score = INITIAL_SCORE;
 };
 
 // Change the character
@@ -265,8 +263,8 @@ var Collectible = function() {
     // Create a circular hitbox to check for collisions with the player
     this.hitbox = {
         radius: 30,
-        x: this.x + hitboxX,
-        y: this.y + hitboxY
+        x: this.x + HITBOX_X,
+        y: this.y + HITBOX_Y
     };
 
     // Randomly assign which collectible will appear and where
@@ -280,7 +278,7 @@ Collectible.prototype.update = function(dt) {
     this.timer = this.timer + dt;
 
     // Chance the collectible if the time has elapsed
-    if (this.timer > changeCollectibleTimer) {
+    if (this.timer > CHANGE_COLLECTIBLE_TIMER) {
 
         this.setCollectible();
 
@@ -315,8 +313,8 @@ Collectible.prototype.setCollectible = function() {
     this.setPosition();
 
     // Update the collectible hitbox
-    this.hitbox.x = this.x + hitboxX;
-    this.hitbox.y = this.y + hitboxY;
+    this.hitbox.x = this.x + HITBOX_X;
+    this.hitbox.y = this.y + HITBOX_Y;
 
     // Reset the collectible timer
     this.timer = 0;
@@ -333,8 +331,8 @@ Collectible.prototype.setPosition = function() {
 
     // Set the image position on the grid
     // The offset variables are used to center the images within the squares
-    this.x = (distanceX * column) + offsetX;
-    this.y = (distanceY * row) + offsetY;
+    this.x = (DISTANCE_X * column) + OFFSET_X;
+    this.y = (DISTANCE_Y * row) + OFFSET_Y;
 };
 
 // Draw the collectible on the screen
@@ -380,7 +378,7 @@ var Scoreboard = function(score, health) {
     this.health = health;
 
     // Set the actual game timer
-    this.timedGameTimer = masterTimer;
+    this.timedGameTimer = MASTER_TIMER;
 
     // Set a flag to identify when the game has finished
     this.gameFinished = false;
@@ -503,7 +501,7 @@ Scoreboard.prototype.handleInput = function(pressedKey) {
 
 // Reset the game
 Scoreboard.prototype.reset = function(player) {
-    this.timedGameTimer = masterTimer;
+    this.timedGameTimer = MASTER_TIMER;
     this.updateSH(player.score, player.health);
     this.gameFinished = false;
     this.startGame = false;
